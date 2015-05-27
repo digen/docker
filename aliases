@@ -1,0 +1,2 @@
+alias dockerenv='eval "$(sudo boot2docker shellinit)"'
+alias dockerstart='sudo boot2docker start'
