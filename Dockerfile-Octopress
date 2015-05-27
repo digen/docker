@@ -1,0 +1,28 @@
+FROM ubuntu:14.04.1
+MAINTAINER digen <swapneel@brainattic.in>
+ 
+# update OS
+RUN apt-get update
+RUN apt-get upgrade -y
+ 
+# Install depndencies
+RUN apt-get install -y ruby1.9.3 ruby-dev build-essential git openssh-server vim nodejs
+RUN git clone http://github.com/imathis/octopress.git /srv/octopress
+ 
+RUN mkdir /var/run/sshd
+RUN echo "root:octo"|chpasswd;
+ 
+WORKDIR /srv/octopress
+ 
+# Install Octopress dependencies
+RUN gem install bundler
+RUN bundle install
+ 
+# Install the default theme
+RUN rake install
+ 
+# Expose default Octopress port
+EXPOSE 4000
+ 
+ENTRYPOINT ["/usr/sbin/sshd"]
+CMD ["-D"]
